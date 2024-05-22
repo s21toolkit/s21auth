@@ -1,4 +1,4 @@
-import { S21_GQL_API_URL, S21_REST_API_URL } from "@/constants"
+import { S21_REST_API_URL } from "@/constants"
 
 export type ContextHeaders = {
 	"X-EDU-SCHOOL-ID": string
@@ -22,7 +22,7 @@ export const CONTEXT_INFO_URL = `${S21_REST_API_URL}/edu-context/context-info`
 export async function fetchContextHeaders(
 	accessToken: string,
 ): Promise<ContextHeaders> {
-	const response = await fetch(S21_GQL_API_URL, {
+	const response = await fetch(CONTEXT_INFO_URL, {
 		method: "GET",
 		headers: {
 			Authorization: `Bearer ${accessToken}`,

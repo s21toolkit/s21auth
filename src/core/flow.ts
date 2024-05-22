@@ -1,5 +1,5 @@
 import { v4 as randomUUID } from "uuid"
-import { createKCCookieUrl, KC_REDIRECT_URI, KC_TOKEN_URL } from "./keycloak"
+import { KC_REDIRECT_URI, KC_TOKEN_URL, createKCCookieUrl } from "./keycloak"
 
 const LOGIN_ACTION_PATTERN = /(?<LoginActionURL>https:\/\/.+?)"/
 const OAUTH_CODE_PATTERN = /code=(?<OAuthCode>.+)[&$]?/

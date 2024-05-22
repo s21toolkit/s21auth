@@ -1,10 +1,10 @@
-import { fetchAccessToken } from "@/auth/core/flow"
-import { AuthCredentials, AuthProvider } from "./AuthProvider"
+import { fetchAccessToken } from "@/core/flow"
+import type { AuthProvider } from "./AuthProvider"
 import { TokenAuthProvider } from "./TokenAuthProvider"
 
 export class UserAuthProvider implements AuthProvider {
-	#username: string
-	#password: string
+	#username
+	#password
 
 	#tokenAuthProvider?: TokenAuthProvider
 
@@ -13,12 +13,18 @@ export class UserAuthProvider implements AuthProvider {
 		this.#password = password
 	}
 
-	async getAuthCredentials(): Promise<AuthCredentials> {
+	async getContextHeaders() {
 		await this.tryRefresh()
 
-		const credentials = await this.#tokenAuthProvider!.getAuthCredentials()
+		// biome-ignore lint/style/noNonNullAssertion: always non-nullable after tryRefresh
+		return await this.#tokenAuthProvider!.getContextHeaders()
+	}
 
-		return credentials
+	async getAccessToken() {
+		await this.tryRefresh()
+
+		// biome-ignore lint/style/noNonNullAssertion: always non-nullable after tryRefresh
+		return await this.#tokenAuthProvider!.getAccessToken()
 	}
 
 	async tryRefresh() {

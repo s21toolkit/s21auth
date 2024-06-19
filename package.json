@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.1",
-    "@s21toolkit/shared": "^1.4.0",
+    "@s21toolkit/shared": "^1.4.1",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/uuid": "^9.0.8",
     "tsup": "^8.1.0",

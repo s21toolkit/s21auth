@@ -15,7 +15,7 @@
     "postversion": "git push && git push --tags",
     "build:tsup": "tsup",
     "lint:biome": "biome check .",
-    "fix:biome": "biome check --apply .",
+    "fix:biome": "biome check --write .",
     "fix": "pnpm fix:biome"
   },
   "files": [

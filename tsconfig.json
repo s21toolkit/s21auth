@@ -3,6 +3,7 @@
 	"extends": ["@s21toolkit/shared/tsconfig/tsup.tsconfig.json"],
 	"compilerOptions": {
 		"lib": ["ES2022", "DOM"],
+		"target": "ES2022",
 
 		"baseUrl": ".",
 		"paths": {

@@ -1,5 +1,6 @@
 import { v4 as randomUUID } from "uuid"
 import { KC_REDIRECT_URI, KC_TOKEN_URL, createKCCookieUrl } from "./keycloak"
+import { extractPayload } from "./token"
 
 const LOGIN_ACTION_PATTERN = /(?<LoginActionURL>https:\/\/.+?)"/
 const OAUTH_CODE_PATTERN = /code=(?<OAuthCode>.+)[&$]?/
@@ -130,6 +131,9 @@ export type TokenResponse = {
 	refreshTime: number
 }
 
+/**
+ * Fetches user access token (authorization_code grant)
+ */
 export async function fetchAccessToken(
 	username: string,
 	password: string,
@@ -170,5 +174,135 @@ export async function fetchAccessToken(
 		expiryTime: tokenData.expires_in,
 		refreshTime: tokenData.refresh_expires_in,
 		cookies: authData.kcCookies,
+	}
+}
+
+type ApiTokenResponseData =
+	| {
+			error: string
+			error_description: string
+	  }
+	| {
+			access_token: string
+			expires_in: number
+			refresh_expires_in: number
+			refresh_token: string
+			token_type: string
+			"not-before-policy": number
+			session_state: string
+			scope: string
+	  }
+
+export type ApiTokenResponse = {
+	accessToken: string
+	refreshToken: string
+	issueTime: number
+	expiryTime: number
+	refreshTime: number
+}
+
+/**
+ * Fetches API access token (password grant)
+ */
+export async function fetchApiToken(
+	username: string,
+	password: string,
+): Promise<ApiTokenResponse> {
+	const tokenRequestData = new URLSearchParams({
+		grant_type: "password",
+		client_id: "s21-open-api",
+		username,
+		password,
+	})
+
+	const tokenIssueTime = Math.floor(Date.now() / 1000)
+
+	const tokenResponse = await fetch(KC_TOKEN_URL, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+		},
+		body: tokenRequestData,
+	})
+
+	const tokenData = (await tokenResponse.json()) as ApiTokenResponseData
+
+	if ("error" in tokenData) {
+		throw new Error(
+			`Failed to fetch access token: [${tokenData.error}] ${tokenData.error_description}`,
+		)
+	}
+
+	return {
+		accessToken: tokenData.access_token,
+		refreshToken: tokenData.refresh_token,
+		issueTime: tokenIssueTime,
+		expiryTime: tokenData.expires_in,
+		refreshTime: tokenData.refresh_expires_in,
+	}
+}
+
+type RefreshTokenResponseData =
+	| {
+			error: string
+			error_description: string
+	  }
+	| {
+			access_token: string
+			expires_in: number
+			refresh_expires_in: number
+			refresh_token: string
+			token_type: string
+			"not-before-policy": number
+			session_state: string
+			scope: string
+	  }
+
+export type RefreshTokenResponse = {
+	accessToken: string
+	refreshToken: string
+	issueTime: number
+	expiryTime: number
+	refreshTime: number
+}
+
+/**
+ * Refreshes both user and API tokens
+ */
+export async function refreshToken(
+	refreshToken: string,
+): Promise<RefreshTokenResponse> {
+	const tokenPayload = extractPayload(refreshToken)
+
+	const tokenRequestData = new URLSearchParams({
+		grant_type: "refresh_token",
+		client_id: tokenPayload.azp,
+		refresh_token: refreshToken,
+	})
+
+	const tokenIssueTime = Math.floor(Date.now() / 1000)
+
+	const tokenResponse = await fetch(KC_TOKEN_URL, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+		},
+		body: tokenRequestData,
+	})
+
+	const tokenData = (await tokenResponse.json()) as RefreshTokenResponseData
+
+	if ("error" in tokenData) {
+		throw new Error(
+			`Failed to refresh access token: [${tokenData.error}] ${tokenData.error_description}`,
+		)
+	}
+
+	return {
+		accessToken: tokenData.access_token,
+		refreshToken: tokenData.refresh_token,
+		issueTime: tokenIssueTime,
+		expiryTime: tokenData.expires_in,
+		refreshTime: tokenData.refresh_expires_in,
 	}
 }

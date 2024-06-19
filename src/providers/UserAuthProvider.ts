@@ -1,16 +1,29 @@
-import { fetchAccessToken } from "@/core/flow"
+import { fetchAccessToken, type fetchApiToken } from "@/core/flow"
 import type { AuthProvider } from "./AuthProvider"
 import { TokenAuthProvider } from "./TokenAuthProvider"
 
+type TokenFactory = typeof fetchAccessToken | typeof fetchApiToken
+
+/**
+ * Provides auth with user credentials, stores credentials and requests new tokens upon expiration. Does not use refresh_token grant.
+ * Can be used for both API and user tokens by passing the corresponding token factory to the constructor.
+ */
 export class UserAuthProvider implements AuthProvider {
 	#username
 	#password
 
 	#tokenAuthProvider?: TokenAuthProvider
 
-	constructor(username: string, password: string) {
+	fetchToken
+
+	constructor(
+		username: string,
+		password: string,
+		tokenFactory: TokenFactory = fetchAccessToken,
+	) {
 		this.#username = username
 		this.#password = password
+		this.fetchToken = tokenFactory
 	}
 
 	async getContextHeaders() {
@@ -36,7 +49,7 @@ export class UserAuthProvider implements AuthProvider {
 	}
 
 	async refresh() {
-		const tokenResponse = await fetchAccessToken(
+		const tokenResponse = await this.fetchToken(
 			this.#username,
 			this.#password,
 		)

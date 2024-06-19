@@ -1,10 +1,7 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": ["@s21toolkit/shared/tsconfig/tsup.tsconfig.json"],
+	"extends": ["@s21toolkit/shared/tsconfig/dom.tsconfig.json", "@s21toolkit/shared/tsconfig/tsup.tsconfig.json"],
 	"compilerOptions": {
-		"lib": ["ES2022", "DOM"],
-		"target": "ES2022",
-
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["src/*"]

@@ -6,6 +6,9 @@ import {
 } from "@/core"
 import type { AuthProvider } from "@/providers/AuthProvider"
 
+/**
+ * Single token auth provider, does not refresh tokens
+ */
 export class TokenAuthProvider implements AuthProvider {
 	readonly tokenPayload
 

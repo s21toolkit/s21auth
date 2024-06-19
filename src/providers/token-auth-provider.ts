@@ -4,7 +4,7 @@ import {
 	fetchContextHeaders,
 	isExpired,
 } from "@/core"
-import type { AuthProvider } from "@/providers/AuthProvider"
+import type { AuthProvider } from "@/providers/auth-provider"
 
 /**
  * Single token auth provider, does not refresh tokens

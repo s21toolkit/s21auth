@@ -1,6 +1,6 @@
 import { fetchAccessToken, type fetchApiToken } from "@/core/flow"
-import type { AuthProvider } from "./AuthProvider"
-import { TokenAuthProvider } from "./TokenAuthProvider"
+import type { AuthProvider } from "./auth-provider"
+import { TokenAuthProvider } from "./token-auth-provider"
 
 type TokenFactory = typeof fetchAccessToken | typeof fetchApiToken
 

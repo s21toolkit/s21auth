@@ -16,8 +16,8 @@ importers:
         specifier: ^1.8.1
         version: 1.8.1
       '@s21toolkit/shared':
-        specifier: ^1.4.1
-        version: 1.4.1
+        specifier: ^1.4.2
+        version: 1.4.2
       '@total-typescript/ts-reset':
         specifier: ^0.5.1
         version: 0.5.1
@@ -342,8 +342,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@s21toolkit/shared@1.4.1':
-    resolution: {integrity: sha512-duGo84wWxSKbaMVdKD3b7nNBqqAWIgkV3pl82azZrBvRkOCVICUsXNOc3okffi5Cucj/qfH58QQJEkXhiy57Yg==}
+  '@s21toolkit/shared@1.4.2':
+    resolution: {integrity: sha512-/mPQiOVN1LnU3vYRH8uSlpIrOPg3a1XQQO7rZkRIcvt00gP38APUfPZ5R0JgNepzP4gMVFPGGPi0DYfDoAoPMw==}
     hasBin: true
 
   '@total-typescript/ts-reset@0.5.1':
@@ -1191,7 +1191,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.18.0':
     optional: true
 
-  '@s21toolkit/shared@1.4.1':
+  '@s21toolkit/shared@1.4.2':
     dependencies:
       '@tsconfig/node20': 20.1.4
       '@tsconfig/strictest': 2.0.5

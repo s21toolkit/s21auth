@@ -122,10 +122,12 @@ type TokenResponseData =
 
 export type TokenResponse = {
 	accessToken: string
+	refreshToken: string
 	oauthCode: string
 	cookies: string
 	issueTime: number
 	expiryTime: number
+	refreshTime: number
 }
 
 export async function fetchAccessToken(
@@ -162,9 +164,11 @@ export async function fetchAccessToken(
 
 	return {
 		accessToken: tokenData.access_token,
+		refreshToken: tokenData.refresh_token,
 		oauthCode: authData.oauthCode,
 		issueTime: tokenIssueTime,
 		expiryTime: tokenData.expires_in,
+		refreshTime: tokenData.refresh_expires_in,
 		cookies: authData.kcCookies,
 	}
 }

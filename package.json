@@ -1,14 +1,12 @@
 {
   "name": "@s21toolkit/auth",
-  "description": "Auth library for edu.21-school.ru",
-  "version": "1.1.0",
+  "description": "Auth library for platform.21-school.ru",
+  "version": "1.2.1",
   "type": "module",
-  "engines": {
-    "node": ">=20.0.0"
-  },
   "scripts": {
     "build": "pnpm lint && pnpm build:tsup",
     "lint:tsc": "tsc",
+    "watch": "tsup --watch",
     "lint": "pnpm lint:biome && pnpm lint:tsc",
     "prepublishOnly": "pnpm build",
     "release": "npm version -m 'chore(release): %s' --",
@@ -23,21 +21,23 @@
     "README.md"
   ],
   "dependencies": {
-    "uuid": "^9.0.1"
+    "@s21toolkit/shared": "^1.4.8",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.1",
-    "@s21toolkit/shared": "^1.4.2",
-    "@total-typescript/ts-reset": "^0.5.1",
-    "@types/uuid": "^9.0.8",
-    "tsup": "^8.1.0",
-    "typescript": "^5.4.5"
+    "@biomejs/biome": "^2.3.10",
+    "@total-typescript/ts-reset": "^0.6.1",
+    "tsup": "8.4.0",
+    "typescript": "^5.9.3"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/s21toolkit/s21client-ts.git"
+    "url": "git+https://github.com/s21toolkit/s21auth.git"
   },
-  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "license": "MIT",
   "main": "build/index.js",
   "types": "build/index.d.ts"
